@@ -4,86 +4,100 @@ html
     title Colony Farm
     link(href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css', rel='stylesheet')
     link(href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css', rel='stylesheet')
+    script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js')
+    script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js')
   body
     h1.col-md-offset-1 Colony Farm
-    h2.col-md-offset-1 Startup Cost Projections
-    br
-    form.form-horizontal.col-md-offset-2(role='form', method='post', action='/startup_cost')
-      .form-group
-        label.control-label.col-md-3(for='rent') average wages/month ($):
-        .col-md-2
-          input#wages.form-control(type='number', step='0.01', name='wages', value="#{data['wages']}")
-        label.control-label.col-md-3(for='employees') number employees:
-        .col-md-2
-          input#employees.form-control(type='number', name='employees', value="#{data['employees']}")
-      .form-group
-        label.control-label.col-md-3(for='rent') rent/month ($):
-        .col-md-2
-          input#rent.form-control(type='number', step='0.01', name='rent', value="#{data['rent']}")
-        label.control-label.col-md-3(for='before-rent') months before rent and pay:
-        .col-md-2
-          input#before-rent.form-control(type='number', name='months_before_rent', value="#{data['months_before_rent']}")
-      .form-group
-        label.control-label.col-md-3(for='kg-feed-price') price/kg feed ($):
-        .col-md-2
-          input#kg-feed-price.form-control(type='number', step='0.01', name='kg_feed_price', value="#{data['kg_feed_price']}")
-        label.control-label.col-md-3 cycle time (weeks):
-        .col-md-2
-          input.form-control(type='number', value="#{data['cycle_time']}", readonly='')
-      .form-group
-        label.control-label.col-md-3(for='feed-per-kg') kg feed/kg crickets:
-        .col-md-2
-          input#feed-per-kg.form-control(type='number', step='0.01', name='feed_per_kg', value="#{data['feed_per_kg']}")
-        label.control-label.col-md-3 feed cost/kg ($):
-        .col-md-2
-          input.form-control(type='number', step='0.01', value="#{data['feed_cost_kg']}", readonly='')
-      .form-group
-        label.control-label.col-md-3(for='kg-cricket-price') price/kg crickets ($):
-        .col-md-2
-          input#kg-cricket-price.form-control(type='number', step='0.01', name='kg_cricket_price', value="#{data['kg_cricket_price']}")
-        label.control-label.col-md-3 profit/kg crickets ($):
-        .col-md-2
-          input.form-control(type='number', step='0.01', value="#{data['kg_profit']}", readonly='')
-      .form-group
-        label.control-label.col-md-3(for='crickets-per-kg') crickets/kg:
-        .col-md-2
-          input#crickets-per-kg.form-control(type='number', step='0.01', name='crickets_per_kg', value="#{data['crickets_per_kg']}")
-        label.control-label.col-md-3 kg/month to break even:
-        .col-md-2
-          input.form-control(type='number', step='0.01', value="#{data['break_even_kg']}", readonly='')
-      .form-group
-        label.control-label.col-md-3(for='eggs-per-female') eggs/female:
-        .col-md-2
-          input#eggs-per-female.form-control(type='number', step='0.01', name='eggs_per_female', value="#{data['eggs_per_female']}")
-        label.control-label.col-md-3 crickets/month to break even:
-        .col-md-2
-          input.form-control(type='number', step='0.01', value="#{data['break_even_crickets']}", readonly='')
-      .form-group
-        label.control-label.col-md-3(for='hatch-rate') egg hatch rate (decimal):
-        .col-md-2
-          input#hatch-rate.form-control(type='number', step='0.01', name='hatch_rate', value="#{data['hatch_rate']}")
-        label.control-label.col-md-3 minimum cohort size (crickets to sell + repopulate):
-        .col-md-2
-          input.form-control(type='number', value="#{data['minimum_cohort_size']}", readonly='')
-      .form-group
-        label.control-label.col-md-3(for='start-crickets') starting crickets:
-        .col-md-2
-          input#start-crickets.form-control(type='number', name='start_crickets', value="#{data['start_crickets']}")
-        label.control-label.col-md-3 scaled cohort size (scaling factor * min cohort):
-        .col-md-2
-          input.form-control(type='number', value="#{data['scaled_cohort_size']}", readonly='')
-      .form-group
-        label.control-label.col-md-3(for='scaling-factor') scaling factor:
-        .col-md-2
-          input#scaling-factor.form-control(type='number', step='0.1', name='scaling_factor', value="#{data['scaling_factor']}")
-        label.control-label.col-md-offest-5.col-md-3 months to break even:
-        .col-md-2
-          input.form-control(type='number', value="#{data['months_to_break_even']}", readonly='')
-      .form-group
-        label.control-label.col-md-offset-5.col-md-3 seed money to get started ($):
-        .col-md-2
-          input.form-control(type='number', value="#{data['seed']}", readonly='')
-      .form-group
-        .col-md-offset-4.col-md-2
-          button.btn.btn-sm.btn-success(type='submit') Recalculate
-    img.col-md-offset-3(src='data:image/png;base64,#{graph}')
+    
+    .container
+        ul.nav.nav-tabs(role='tablist')
+            li.active(role='presentation')
+                a(href='#startup', data-toggle='tab') Startup Costs
+            li(role='presentation')
+                a(href='#running', data-toggle='tab') Running Costs    
+        .tab-content
+            .tab-pane.fade.in.active#startup
+                h2.col-md-offset-1 Startup Cost Projections
+                br
+                form.form-horizontal.col-md-offset-2(role='form', method='post', action='/startup_cost')
+                    .form-group
+                        label.control-label.col-md-3(for='rent') average wages/month ($):
+                        .col-md-2
+                            input#wages.form-control(type='number', step='0.01', name='wages', value="#{data['wages']}")
+                        label.control-label.col-md-3(for='employees') number employees:
+                        .col-md-2
+                            input#employees.form-control(type='number', name='employees', value="#{data['employees']}")
+                    .form-group
+                        label.control-label.col-md-3(for='rent') rent/month ($):
+                        .col-md-2
+                          input#rent.form-control(type='number', step='0.01', name='rent', value="#{data['rent']}")
+                        label.control-label.col-md-3(for='before-rent') months before rent and pay:
+                        .col-md-2
+                          input#before-rent.form-control(type='number', name='months_before_rent', value="#{data['months_before_rent']}")
+                    .form-group
+                        label.control-label.col-md-3(for='kg-feed-price') price/kg feed ($):
+                        .col-md-2
+                          input#kg-feed-price.form-control(type='number', step='0.01', name='kg_feed_price', value="#{data['kg_feed_price']}")
+                        label.control-label.col-md-3 cycle time (weeks):
+                        .col-md-2
+                          input.form-control(type='number', value="#{data['cycle_time']}", readonly='')
+                    .form-group
+                        label.control-label.col-md-3(for='feed-per-kg') kg feed/kg crickets:
+                        .col-md-2
+                          input#feed-per-kg.form-control(type='number', step='0.01', name='feed_per_kg', value="#{data['feed_per_kg']}")
+                        label.control-label.col-md-3 feed cost/kg ($):
+                        .col-md-2
+                          input.form-control(type='number', step='0.01', value="#{data['feed_cost_kg']}", readonly='')
+                    .form-group
+                        label.control-label.col-md-3(for='kg-cricket-price') price/kg crickets ($):
+                        .col-md-2
+                          input#kg-cricket-price.form-control(type='number', step='0.01', name='kg_cricket_price', value="#{data['kg_cricket_price']}")
+                        label.control-label.col-md-3 profit/kg crickets ($):
+                        .col-md-2
+                          input.form-control(type='number', step='0.01', value="#{data['kg_profit']}", readonly='')
+                    .form-group
+                        label.control-label.col-md-3(for='crickets-per-kg') crickets/kg:
+                        .col-md-2
+                          input#crickets-per-kg.form-control(type='number', step='0.01', name='crickets_per_kg', value="#{data['crickets_per_kg']}")
+                        label.control-label.col-md-3 kg/month to break even:
+                        .col-md-2
+                          input.form-control(type='number', step='0.01', value="#{data['break_even_kg']}", readonly='')
+                    .form-group
+                        label.control-label.col-md-3(for='eggs-per-female') eggs/female:
+                        .col-md-2
+                          input#eggs-per-female.form-control(type='number', step='0.01', name='eggs_per_female', value="#{data['eggs_per_female']}")
+                        label.control-label.col-md-3 crickets/month to break even:
+                        .col-md-2
+                          input.form-control(type='number', step='0.01', value="#{data['break_even_crickets']}", readonly='')
+                    .form-group
+                        label.control-label.col-md-3(for='hatch-rate') egg hatch rate (decimal):
+                        .col-md-2
+                          input#hatch-rate.form-control(type='number', step='0.01', name='hatch_rate', value="#{data['hatch_rate']}")
+                        label.control-label.col-md-3 minimum cohort size (crickets to sell + repopulate):
+                        .col-md-2
+                          input.form-control(type='number', value="#{data['minimum_cohort_size']}", readonly='')
+                    .form-group
+                        label.control-label.col-md-3(for='start-crickets') starting crickets:
+                        .col-md-2
+                          input#start-crickets.form-control(type='number', name='start_crickets', value="#{data['start_crickets']}")
+                        label.control-label.col-md-3 scaled cohort size (scaling factor * min cohort):
+                        .col-md-2
+                          input.form-control(type='number', value="#{data['scaled_cohort_size']}", readonly='')
+                    .form-group
+                        label.control-label.col-md-3(for='scaling-factor') scaling factor:
+                        .col-md-2
+                          input#scaling-factor.form-control(type='number', step='0.1', name='scaling_factor', value="#{data['scaling_factor']}")
+                        label.control-label.col-md-offest-5.col-md-3 months to break even:
+                        .col-md-2
+                          input.form-control(type='number', value="#{data['months_to_break_even']}", readonly='')
+                    .form-group
+                        label.control-label.col-md-offset-5.col-md-3 seed money to get started ($):
+                        .col-md-2
+                          input.form-control(type='number', value="#{data['seed']}", readonly='')
+                    .form-group
+                        .col-md-offset-4.col-md-2
+                          button.btn.btn-sm.btn-success(type='submit') Recalculate
+                    img.col-md-offset-3(src='data:image/png;base64,#{graph}')h2.col-md-offset-1 Startup Cost Projections
+            .tab-pane.fade#running
+                h2.col-md-offset-1 Running Cost Projections
+                
