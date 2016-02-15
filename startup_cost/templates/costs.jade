@@ -80,9 +80,9 @@ html
                         label.control-label.col-md-3(for='start-crickets') starting crickets:
                         .col-md-2
                           input#start-crickets.form-control(type='number', name='start_crickets', value="#{data['start_crickets']}")
-                        label.control-label.col-md-3 scaled cohort size (scaling factor * min cohort):
-                        .col-md-2
-                          input.form-control(type='number', value="#{data['scaled_cohort_size']}", readonly='')
+                        //- label.control-label.col-md-3 scaled cohort size (scaling factor * min cohort):
+                        //- .col-md-2
+                        //-   input.form-control(type='number', value="#{data['scaled_cohort_size']}", readonly='')
                     .form-group
                         label.control-label.col-md-3(for='scaling-factor') scaling factor:
                         .col-md-2
@@ -97,7 +97,7 @@ html
                     .form-group
                         .col-md-offset-4.col-md-2
                           button.btn.btn-sm.btn-success(type='submit') Recalculate
-                    img.col-md-offset-3(src='data:image/png;base64,#{graph}')h2.col-md-offset-1 Startup Cost Projections
+                    img.col-md-offset-2(src='data:image/png;base64,#{graph}')
             .tab-pane.fade#running
                 h2.col-md-offset-1 Running Cost Projections
-                
+                    img.col-md-offset-2(src='data:image/png;base64,#{graph2}')
